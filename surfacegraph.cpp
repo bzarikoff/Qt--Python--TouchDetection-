@@ -106,6 +106,8 @@ const float sampleMax = 24.0f;//8.0f;
 float sensitivity = 1;
 int on = 0;
 
+
+//run initially to instantiate - also starts timer
 SurfaceGraph::SurfaceGraph(Q3DSurface *surface)//, Q3DSurface *surface2)
     : m_graph(surface)//, m_graph2(surface2)
 {
@@ -178,6 +180,8 @@ SurfaceGraph::~SurfaceGraph()
   //  delete m_graph2;
 }
 
+
+//call functions to update each graph at each timer interval
 void SurfaceGraph::timerEvent(QTimerEvent *event)
 {
     //qDebug() << "Update  1";
@@ -197,17 +201,10 @@ void SurfaceGraph::timerEvent(QTimerEvent *event)
 
       standardOutput << "after" << endl;
 
-      // enableSqrtSinModel(1);
- //   }
-  // if(container2){
 
-//   }
- //   if(&SurfaceGraph::enableHeightMapModel){
- //      fillSqrtSinProxy();
-//    }
 }
 
-
+//begin button - not used in python version
 void SurfaceGraph::begin()
 {
     QTextStream standardOutput(stdout);
@@ -253,6 +250,7 @@ if(on == 0){
 on = 1;
 }
 
+//stop button - not used in python version
 void SurfaceGraph::stop()
 {
     QTextStream standardOutput(stdout);
@@ -267,7 +265,7 @@ void SurfaceGraph::stop()
 
 }
 
-
+// not used
 void SurfaceGraph::test2(QString box)
 {
 
@@ -435,6 +433,7 @@ void SurfaceGraph::test2(QString box)
         QObject::connect(timer, SIGNAL(timeout()), this, SLOT(fillSqrtSinProxy()));
         timer->start(100);
 }  */    //added this to header and main to attempt to call fillsqrt every 100 ms
+//not used
 void SurfaceGraph::fillSqrtSinProxy2()
 {
 
@@ -688,6 +687,7 @@ void SurfaceGraph::fillSqrtSinProxy2()
 
 }
 
+//updates raw data graph
 void SurfaceGraph::fillSqrtSinProxy()
 {
 
@@ -703,7 +703,8 @@ void SurfaceGraph::fillSqrtSinProxy()
     int p = 0;
 
 
-
+//stores raw data in integer_test array
+//ignores the first part of socket data up to the k ( which separates the touch and the raw data)
 
     QTextStream standardOutput(stdout);
     QByteArray data;
@@ -948,7 +949,7 @@ void SurfaceGraph::fillSqrtSinProxy()
 
 
 
-
+//keep this selected for socket mode
 void SurfaceGraph::enableSqrtSinModel(bool enable)
 {
     if (enable) {
