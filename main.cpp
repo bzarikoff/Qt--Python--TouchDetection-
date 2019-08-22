@@ -27,6 +27,19 @@
 //**
 //****************************************************************************/
 
+
+
+
+
+/*
+ *This code is for receiving raw data and touch data from python over a socket connection
+ *The data is then displayed in two graphs simultaneously
+ */
+
+
+
+
+
 #include "surfacegraph.h"
 #include "chartview.h"
 
@@ -97,7 +110,7 @@ int main(int argc, char **argv)
 {
 
 
-
+//connects to socket in python
 
 
     printf("\nInitialising Winsock...");
@@ -174,35 +187,22 @@ int main(int argc, char **argv)
 
     puts("Connection accepted");
 
-
-
+// ////////////////////////////////////////
+//  Creates Main Window for graphs
+// ///////////////////////////////////////
 
 
     QTextStream standardOutput(stdout);
-
-
     QApplication app(argc, argv);
 
 
-//QGridLayout grid;
-//QVBoxLayout vertgrid;
 chartView = new ChartView();
-  //  ChartView *chartView = new ChartView();
-   // QWindow window;
- //   window.setCentralWidget(chartView);
-//    window.resize(400, 300);
-//    window.show();
 
 Q3DSurface *graph = new Q3DSurface();
 //Q3DSurface *graph2 = new Q3DSurface();
 QWidget *container = QWidget::createWindowContainer(graph);
 //QWidget *container2 = QWidget::createWindowContainer(graph2);
 //QWidget *container2 = QWidget::createWindowContainer(chartView);
-
-
-
-//vertgrid.addWidget(container);
-//vertgrid.addWidget(container2);
 
 if (!graph->hasContext()) {
     QMessageBox msgBox;
@@ -212,12 +212,6 @@ if (!graph->hasContext()) {
 }
 
 
-//if (!graph2->hasContext()) {
-//    QMessageBox msgBox;
-//    msgBox.setText("Couldn't initialize the OpenGL context.");
-//    msgBox.exec();
-//    return -1;
-//}
 
 QSize screenSize = graph->screen()->size();
 container->setMinimumSize(QSize(screenSize.width() / 2, screenSize.height() / 4));//1.6
@@ -225,14 +219,9 @@ container->setMaximumSize(screenSize);
 container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 container->setFocusPolicy(Qt::StrongFocus);
 
-//QSize screenSize2 = graph2->screen()->size();
-//container2->setMinimumSize(QSize(screenSize2.width() / 2, screenSize2.height() / 4));
-//container2->setMaximumSize(screenSize2);
-//container2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//container2->setFocusPolicy(Qt::StrongFocus);
 
 
-
+//formatting layout
 //! [1]
 QWidget *widget = new QWidget;
 QHBoxLayout *hLayout = new QHBoxLayout(widget);
@@ -246,6 +235,7 @@ hLayout->addLayout(vLayout);
 vLayout->setAlignment(Qt::AlignTop);
 //! [1]
 
+//sets up various buttons and controls
 
 widget->setWindowTitle(QStringLiteral("Surface example"));
 
@@ -454,83 +444,6 @@ QObject::connect(sqrtSinModelRB, &QRadioButton::toggled,
 
 
 
-//QObject::connect(heightMapModelRB, &QRadioButton::toggled,
-//                 modifier2, &SurfaceGraph::enableSqrtSinModel);
-//QObject::connect(sqrtSinModelRB, &QRadioButton::toggled,
-//                 modifier2, &SurfaceGraph::enableHeightMapModel);
-
-
-//QObject::connect(box, SIGNAL(currentTextChanged(QString)),
-//                 modifier2, SLOT(test(QString)));
-
-
-
-
-
-//QObject::connect(start, &QPushButton::pressed,                    //currentTextChanged(QString)),
-//                 modifier2, &SurfaceGraph::begin);
-
-
-//QObject::connect(stop, &QPushButton::pressed,                    //currentTextChanged(QString)),
-//                 modifier2, &SurfaceGraph::stop);
-
-
-
-
-//QObject::connect(modeNoneRB, &QRadioButton::toggled,
-//                 modifier2, &SurfaceGraph::toggleModeNone);
-//QObject::connect(modeItemRB,  &QRadioButton::toggled,
-//                 modifier2, &SurfaceGraph::toggleModeItem);
-//QObject::connect(modeSliceRowRB,  &QRadioButton::toggled,
-//                 modifier2, &SurfaceGraph::toggleModeSliceRow);
-//QObject::connect(modeSliceColumnRB,  &QRadioButton::toggled,
-//                 modifier2, &SurfaceGraph::toggleModeSliceColumn);
-//QObject::connect(axisMinSliderX, &QSlider::valueChanged,
-//                 modifier2, &SurfaceGraph::adjustXMin);
-//QObject::connect(axisMaxSliderX, &QSlider::valueChanged,
-//                 modifier2, &SurfaceGraph::adjustXMax);
-//QObject::connect(axisMinSliderZ, &QSlider::valueChanged,
-//                 modifier2, &SurfaceGraph::adjustZMin);
-//QObject::connect(axisMaxSliderZ, &QSlider::valueChanged,
-//                 modifier2, &SurfaceGraph::adjustZMax);
-
-
-//QObject::connect(axisMinSliderY, &QSlider::valueChanged,
-//                 modifier2, &SurfaceGraph::adjustYMin);
-//QObject::connect(axisMaxSliderY, &QSlider::valueChanged,
-//                 modifier2, &SurfaceGraph::adjustYMax);
-
-//QObject::connect(themeList, SIGNAL(currentIndexChanged(int)),
-//                 modifier2, SLOT(changeTheme(int)));
-//QObject::connect(gradientBtoYPB, &QPushButton::pressed,
-//                 modifier2, &SurfaceGraph::setBlackToYellowGradient);
-//QObject::connect(gradientGtoRPB, &QPushButton::pressed,
-//                 modifier2, &SurfaceGraph::setGreenToRedGradient);
-
-
-
-//modifier2->setAxisMinSliderY(axisMinSliderY);
-//modifier2->setAxisMaxSliderY(axisMaxSliderY);
-
-//modifier2->setAxisMinSliderX(axisMinSliderX);
-//modifier2->setAxisMaxSliderX(axisMaxSliderX);
-//modifier2->setAxisMinSliderZ(axisMinSliderZ);
-//modifier2->setAxisMaxSliderZ(axisMaxSliderZ);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 QObject::connect(box, SIGNAL(currentTextChanged(QString)),
                  modifier, SLOT(test2(QString)));
 
@@ -606,27 +519,6 @@ standardOutput << "loop 1" << endl;
 
 //}///////////////////////////////
 return app.exec();
-//#include <QtWidgets/QApplication>
-//#include <QtWidgets/QMainWindow>
-//#include "chartview.h"
-
-//QT_CHARTS_USE_NAMESPACE
-
-//int main(int argc, char *argv[])
-//{
-//      QApplication app(argc, argv);
-
-////![4]
-//    ChartView *chartView = new ChartView();
-//    QMainWindow window;
-//    window.setCentralWidget(chartView);
-//    window.resize(400, 300);
-//    window.show();
-////![4]
-
-//    return app.exec();
-//}
-
 
 
 
