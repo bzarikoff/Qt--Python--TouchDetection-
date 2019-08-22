@@ -27,6 +27,12 @@
 **
 ****************************************************************************/
 
+
+//code for the touch data graphing
+
+
+
+
 #include "chartview.h"
 #include <QtCharts/QScatterSeries>
 #include <QtCharts/QLegendMarker>
@@ -72,23 +78,13 @@
 
 
 
-//WSADATA wsa;
-//SOCKET s, new_socket;
-//struct sockaddr_in server, client;
-//int c;
-//char *message;
-//int opt = 1;
-
-//int iResult;
 int recvbuflen2 = DEFAULT_BUFLEN;
-
-
-//char recvbuf[DEFAULT_BUFLEN];
-
 int touch2[20][3];
 int force2;
 
 
+
+// support for 15 separate touches
 QScatterSeries *series0 = new QScatterSeries();
 QScatterSeries *series1 = new QScatterSeries();
 QScatterSeries *series2 = new QScatterSeries();
@@ -105,25 +101,13 @@ QScatterSeries *series12 = new QScatterSeries();
 QScatterSeries *series13 = new QScatterSeries();
 QScatterSeries *series14 = new QScatterSeries();
 
-
+//sets up touch graph
 ChartView::ChartView(QWidget *parent) :
     QChartView(new QChart(), parent)
 {
     //![1]
-   // QScatterSeries *series0 = new QScatterSeries();
-   // series0->setName("touch data");
     series0->setMarkerShape(QScatterSeries::MarkerShapeCircle);
     series0->setMarkerSize(0.1);
-
-//    QScatterSeries *series1 = new QScatterSeries();
-//    series1->setName("scatter2");
-//    series1->setMarkerShape(QScatterSeries::MarkerShapeRectangle);
-//    series1->setMarkerSize(20.0);
-
-//    QScatterSeries *series2 = new QScatterSeries();
-//    series2->setName("scatter3");
-//    series2->setMarkerShape(QScatterSeries::MarkerShapeRectangle);
-//    series2->setMarkerSize(30.0);
     //![1]
 
     //![2]
@@ -132,9 +116,8 @@ ChartView::ChartView(QWidget *parent) :
     series0->append(23, 0);
     series0->append(23, 15);
 
-//    *series1 << QPointF(1, 1) << QPointF(3, 3) << QPointF(7, 6) << QPointF(8, 3) << QPointF(10, 2);
-//    *series2 << QPointF(1, 5) << QPointF(4, 6) << QPointF(6, 3) << QPointF(9, 5);
-//    //![2]
+
+   //![2]
 
     //![3]
 //    QPainterPath starPath;
@@ -187,11 +170,16 @@ ChartView::ChartView(QWidget *parent) :
  //   chart()->legend()->setMarkerShape(QLegend::MarkerShapeFromSeries);
     //![5]
 }
+
+
+//not used - update is triggered by timerEvent function in surfacegraph.cpp
 void ChartView::timerEvent(QTimerEvent *event)
 {
   //  UpdateChart();
 }
 
+
+//updatees the touch graph with new socket data
 void ChartView::UpdateChart()
 {
 
@@ -229,7 +217,11 @@ void ChartView::UpdateChart()
 
 
 
-
+//These loops store the touch data received from the socket in recvbuf into the 2D array touch2
+//each row of touch2 has 3 elements, the first 2 are the locations of the touches followed by the foce
+// the force is used to determine how large the touch appears in the graph
+//for each data point first it is determined how many digits long it is, then the total value is stored
+// in the touch array
 
 
             int index = 0;
@@ -409,7 +401,7 @@ void ChartView::UpdateChart()
   std::cout << "end" << std::endl;
 
 
- // series0->setMarkerSize(10);
+ // clears previous data
   series0->clear();
   series1->clear();
   series2->clear();
@@ -428,6 +420,7 @@ void ChartView::UpdateChart()
 
 if(1){//organizing
 
+    //force value determines size of circle
   if(touch2[0][2] > 5 && touch2[0][2] <= 30){
     series0->setMarkerSize(20);
   }
@@ -698,7 +691,7 @@ if(1){//organizing
 
 }//organizing
 
-
+//touch points are graphed
   series0->append(23-touch2[0][1], touch2[0][0]);
   series1->append(23-touch2[1][1], touch2[1][0]);
   series2->append(23-touch2[2][1], touch2[2][0]);
