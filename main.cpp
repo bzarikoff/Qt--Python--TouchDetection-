@@ -191,6 +191,8 @@ int main(int argc, char **argv)
 //  Creates Main Window for graphs
 // ///////////////////////////////////////
 
+    //note that start, stop and com port are not used for this codes function
+    //as all the data is received over the socket from the beginning
 
     QTextStream standardOutput(stdout);
     QApplication app(argc, argv);
