@@ -687,7 +687,7 @@ void SurfaceGraph::fillSqrtSinProxy2()
 
 }
 
-//updates raw data graph
+//updates raw data graph with socket data
 void SurfaceGraph::fillSqrtSinProxy()
 {
 
